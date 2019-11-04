@@ -54,11 +54,10 @@ public class StarController {
 
         String uuid = UUID.randomUUID().toString().replace("-","_");
         String realPath = FileUtil.saveFile(file,uuid);
-        System.out.println(realPath);
         String face_token = FaceCheckUtil.faceAdd(realPath, groupId, uuid, starInfo);
         String imgHttpUrl =request.getRequestURL().toString()
                 .replace(request.getRequestURI().toString(),
-                        "/face/images/" + file.getOriginalFilename());
+                        "/face/images/" + uuid + ".jpg");
         if(face_token ==null){
             File err_file = new File(realPath);
             err_file.delete();

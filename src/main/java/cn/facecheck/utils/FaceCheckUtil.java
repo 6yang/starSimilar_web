@@ -6,6 +6,10 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import cn.facecheck.entity.SearchOut;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.taglibs.standard.tag.common.fmt.RequestEncodingSupport;
 import org.json.JSONObject;
 
 /***
@@ -25,7 +29,7 @@ public class FaceCheckUtil {
     /*
     * 从人脸库中搜集人脸
     * */
-    public static String faceSearch(String filePath,String faceGroup){
+    public static SearchOut faceSearch(String filePath,String faceGroup,Integer max_user_num){
 
         String url = "https://aip.baidubce.com/rest/2.0/face/v3/search";
 
@@ -37,15 +41,32 @@ public class FaceCheckUtil {
             map.put("group_id_list", faceGroup);
             map.put("image_type", "BASE64");
             map.put("quality_control", "LOW");
+            if(max_user_num !=0){
+                map.put("max_user_num",max_user_num);
+            }
 
             String param = GsonUtils.toJson(map);
-
 
             String accessToken = getAccessToken(APIKEY,SECRETKEY);
 
             String result = HttpUtil.post(url, accessToken, "application/json", param);
 
-            return result;
+            JSONObject j1 = new JSONObject(result);
+            JSONObject j2 = j1.getJSONObject("result");
+            String face_token = j2.getString("face_token");
+            JSONObject user_list = j2.getJSONArray("user_list").getJSONObject(0);
+            String group_id = user_list.getString("group_id");
+            String user_id = user_list.getString("user_id");
+            String user_info = user_list.getString("user_info");
+            int score = user_list.getInt("score");
+            SearchOut searchOut = new SearchOut();
+            searchOut.setFace_token(face_token);
+            searchOut.setGroup_id(group_id);
+            searchOut.setUser_id(user_id);
+            searchOut.setUser_info(user_info);
+            searchOut.setScore(String.valueOf(score));
+
+            return searchOut;
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -28,4 +28,11 @@ public class StarServiceImpl implements StarService {
     public void insertStarFace(String groupId, String starInfo, String face_token, String imgHttpUrl, String uuid) {
         starDao.insertStarFace(groupId,starInfo,face_token,imgHttpUrl,uuid);
     }
+
+    @Override
+    public Star findStarImgUrl(String face_token) {
+        return starDao.findStarImgUrl(face_token);
+    }
+
+
 }

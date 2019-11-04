@@ -20,4 +20,8 @@ public interface StarDao {
     @Insert("insert into star(group_id,star_info,face_taken,img_url,star_id) " +
             " values(#{groupId},#{starInfo},#{face_token},#{imgHttpUrl},#{uuid})")
     void insertStarFace(@Param("groupId") String groupId, @Param("starInfo") String starInfo, @Param("face_token") String face_token, @Param("imgHttpUrl") String imgHttpUrl,@Param("uuid") String uuid);
+
+
+    @Select("select * from star where face_taken = #{face_token}")
+    Star findStarImgUrl(String face_token);
 }

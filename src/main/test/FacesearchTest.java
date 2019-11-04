@@ -24,7 +24,7 @@ public class FacesearchTest {
 
     @Test
     public void faceSearch() throws IOException {
-        File file = new File("F:\\androidapp\\face\\images\\tongliya.jpg");
+        File file = new File("F:\\apache-tomcat-8.5.31\\webapps\\face\\images\\u=1624728286,839770343&fm=26&gp=0.jpg");
         FileInputStream fis = new FileInputStream(file);
         byte[] bytes = new byte[fis.available()];
         fis.read(bytes);
