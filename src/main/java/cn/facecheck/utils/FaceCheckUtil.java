@@ -22,7 +22,9 @@ public class FaceCheckUtil {
     private final static String SECRETKEY ="dso2mPmTGLFLb4E0pw7pYkhpX58xITeL";
 
 
-
+    /*
+    * 从人脸库中搜集人脸
+    * */
     public static String faceSearch(String filePath,String faceGroup){
 
         String url = "https://aip.baidubce.com/rest/2.0/face/v3/search";
@@ -117,15 +119,21 @@ public class FaceCheckUtil {
             map.put("group_id", groupId);
             map.put("user_id", userId);
             map.put("user_info", userInfo);
-            map.put("liveness_control", "NORMAL");
+            map.put("liveness_control", "NONE");
             map.put("image_type", "BASE64");
             map.put("quality_control", "LOW");
             String param = GsonUtils.toJson(map);
             String accessToken = getAccessToken(APIKEY,SECRETKEY);
-
             String result = HttpUtil.post(url, accessToken, "application/json", param);
-            System.out.println(result);
-            return result;
+            JSONObject j1 = new JSONObject(result);
+            JSONObject j2 = j1.getJSONObject("result");
+            if(j2 != null){
+                String face_token = j2.getString("face_token");
+                return face_token;
+            }else{
+                return null;
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

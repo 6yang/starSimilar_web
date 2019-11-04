@@ -1,11 +1,53 @@
 package cn.facecheck.utils;
 
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.ServletContext;
 import java.io.*;
 
 /**
- * 文件读取工具类
+ * 文件工具类
  */
 public class FileUtil {
+
+
+
+    /*
+     * 将上传的文件保存
+     * */
+
+    public static String saveFile(MultipartFile file,String uuid){
+
+        WebApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
+        ServletContext servletContext = context.getServletContext();
+        String realPath = servletContext.getRealPath("/images/");
+
+        if(!file.isEmpty()){
+            //上传文件名
+            String filename = uuid + ".jpg";
+
+            File filepath = new File(realPath, filename);
+            //判断路径是否存在，如果不存在就创建一个
+
+
+            if (!filepath.getParentFile().exists()) {
+                filepath.getParentFile().mkdirs();
+            }
+            //将上传文件保存到一个目标文件当中
+            try {
+                file.transferTo(new File(realPath + File.separator + filename));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return realPath + File.separator + filename;
+        }else{
+            return "";
+        }
+
+    }
+
 
     /**
      * 读取文件内容，作为字符串返回
