@@ -20,10 +20,17 @@ public class ImageToBase64Util {
             fis = new FileInputStream(filePath);
             bytes = new byte[fis.available()];
             fis.read(bytes);
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }finally {
+            try {
+                fis.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         String encode = Base64Util.encode(bytes);
         return encode;

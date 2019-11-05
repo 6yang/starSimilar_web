@@ -9,6 +9,8 @@ package cn.facecheck.entity;
  */
 public class SearchOut {
 
+    private String success_tag;
+
     private String face_token;
 
     private String group_id;
@@ -20,6 +22,14 @@ public class SearchOut {
     private String score;
 
     private String img_url;
+
+    public String getSuccess_tag() {
+        return success_tag;
+    }
+
+    public void setSuccess_tag(String success_tag) {
+        this.success_tag = success_tag;
+    }
 
     public String getFace_token() {
         return face_token;

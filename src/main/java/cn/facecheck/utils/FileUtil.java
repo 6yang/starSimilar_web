@@ -41,7 +41,7 @@ public class FileUtil {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return realPath + File.separator + filename;
+            return realPath + filename;
         }else{
             return "";
         }

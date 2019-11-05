@@ -30,8 +30,8 @@ public class StarServiceImpl implements StarService {
     }
 
     @Override
-    public Star findStarImgUrl(String face_token) {
-        return starDao.findStarImgUrl(face_token);
+    public Star findStarImgUrl(String star_id) {
+        return starDao.findStarImgUrl(star_id);
     }
 
 

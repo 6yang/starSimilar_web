@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.sound.midi.Soundbank;
+import java.io.File;
 import java.util.UUID;
 
 /***
@@ -77,10 +78,15 @@ public class UserController {
                 .replace(request.getRequestURI().toString(),
                         "/face/images/" + uuid + ".jpg");
 
+        System.out.println(realPath);
         SearchOut searchOut = FaceCheckUtil.faceSearch(realPath, groupId, 0);
-        Star star =  starService.findStarImgUrl(searchOut.getFace_token());
-        searchOut.setImg_url(star.getImg_url());
+        if("success".equals(searchOut.getSuccess_tag())){
+            Star star =  starService.findStarImgUrl(searchOut.getUser_id());
+            searchOut.setImg_url(star.getImg_url());
+        }
+        System.out.println(GsonUtils.toJson(searchOut));
         return GsonUtils.toJson(searchOut);
+//        return  "上传成功";
     }
 
 }

@@ -9,5 +9,5 @@ public interface StarService {
     void insertStarFace(String groupId, String starInfo, String face_token, String imgHttpUrl, String uuid);
 
 
-    Star findStarImgUrl(String face_token);
+    Star findStarImgUrl(String star_id);
 }

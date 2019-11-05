@@ -7,7 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.facecheck.entity.Msg;
 import cn.facecheck.entity.SearchOut;
+import com.google.gson.Gson;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.taglibs.standard.tag.common.fmt.RequestEncodingSupport;
 import org.json.JSONObject;
@@ -34,10 +36,12 @@ public class FaceCheckUtil {
         String url = "https://aip.baidubce.com/rest/2.0/face/v3/search";
 
         String base64Code = ImageToBase64Util.imageToBase64(filePath);
+
+
         try {
             Map<String, Object> map = new HashMap<>();
             map.put("image", base64Code);
-            map.put("liveness_control", "NORMAL");
+            map.put("liveness_control", "NONE");
             map.put("group_id_list", faceGroup);
             map.put("image_type", "BASE64");
             map.put("quality_control", "LOW");
@@ -51,21 +55,23 @@ public class FaceCheckUtil {
 
             String result = HttpUtil.post(url, accessToken, "application/json", param);
 
-            JSONObject j1 = new JSONObject(result);
-            JSONObject j2 = j1.getJSONObject("result");
-            String face_token = j2.getString("face_token");
-            JSONObject user_list = j2.getJSONArray("user_list").getJSONObject(0);
-            String group_id = user_list.getString("group_id");
-            String user_id = user_list.getString("user_id");
-            String user_info = user_list.getString("user_info");
-            int score = user_list.getInt("score");
-            SearchOut searchOut = new SearchOut();
-            searchOut.setFace_token(face_token);
-            searchOut.setGroup_id(group_id);
-            searchOut.setUser_id(user_id);
-            searchOut.setUser_info(user_info);
-            searchOut.setScore(String.valueOf(score));
+            System.out.println("请求结果:"+result);
+            Msg msg = new Gson().fromJson(result, Msg.class);
 
+            SearchOut searchOut = new SearchOut();
+            if(!"SUCCESS".equals(msg.error_msg)){
+                //不成功就把文件删除掉
+                searchOut.setSuccess_tag("fail");
+                File tmpFile = new File(filePath);
+                tmpFile.delete();
+            }else {
+                searchOut.setFace_token(msg.result.face_token);
+                searchOut.setGroup_id(msg.result.user_list.get(0).group_id);
+                searchOut.setUser_id(msg.result.user_list.get(0).user_id);
+                searchOut.setUser_info(msg.result.user_list.get(0).user_info);
+                searchOut.setScore(msg.result.user_list.get(0).score);
+                searchOut.setSuccess_tag("success");
+            }
             return searchOut;
 
         } catch (Exception e) {
