@@ -14,29 +14,29 @@
 
 </head>
 <body style="padding: 10%">
-<form  id="uploadForm" enctype="multipart/form-data" style="border: 1px solid black;padding: 10px;border-radius: 5px">
-    <label>
-        上传图片：<input  type="file" name="imgFile"/>
-    </label><br>
-    <br>
-    <label>
-        人物姓名：<input type="text" name="starName" >
-    </label><br>
-    <br>
-    <label>
-        人物分组：
-        <select name="starGroup">
-            <option value="star_woman_asia">亚洲女明星</option>
-            <option value="star_man_asia">亚洲男明星</option>
-            <option value="start_woman_white" >白人女明星</option>
-            <option value="start_man_white" >白人男明星</option>
-            <option value="star_woman_black">黑人女明星</option>
-            <option value="star_man_black">黑人男明星</option>
-        </select>
-    </label><br>
-    <br>
-    <button id="upload" type="button">上传</button>
-</form>
+<%--<form  id="uploadForm" enctype="multipart/form-data" style="border: 1px solid black;padding: 10px;border-radius: 5px">--%>
+    <%--<label>--%>
+        <%--上传图片：<input  type="file" name="imgFile"/>--%>
+    <%--</label><br>--%>
+    <%--<br>--%>
+    <%--<label>--%>
+        <%--人物姓名：<input type="text" name="starName" >--%>
+    <%--</label><br>--%>
+    <%--<br>--%>
+    <%--<label>--%>
+        <%--人物分组：--%>
+        <%--<select name="starGroup">--%>
+            <%--<option value="star_woman_asia">亚洲女明星</option>--%>
+            <%--<option value="star_man_asia">亚洲男明星</option>--%>
+            <%--<option value="start_woman_white" >白人女明星</option>--%>
+            <%--<option value="start_man_white" >白人男明星</option>--%>
+            <%--<option value="star_woman_black">黑人女明星</option>--%>
+            <%--<option value="star_man_black">黑人男明星</option>--%>
+        <%--</select>--%>
+    <%--</label><br>--%>
+    <%--<br>--%>
+    <%--<button id="upload" type="button">上传</button>--%>
+<%--</form>--%>
 
 <form  id="uploadFormUser" enctype="multipart/form-data" style="border: 1px solid black;padding: 10px;border-radius: 5px">
     <label>
@@ -50,12 +50,9 @@
     <label>
         人物分组：
         <select name="starGroup">
-            <option value="star_woman_asia">亚洲女明星</option>
-            <option value="star_man_asia">亚洲男明星</option>
-            <option value="start_woman_white" >白人女明星</option>
-            <option value="start_man_white" >白人男明星</option>
-            <option value="star_woman_black">黑人女明星</option>
-            <option value="star_man_black">黑人男明星</option>
+            <option value="female">女明星</option>
+            <option value="male">男明星</option>
+
         </select>
     </label><br>
     <br>
@@ -89,6 +86,7 @@
                 contentType: false
             }).done(function (res) {
                 alert(res);
+                console.log(res);
             }).fail(function (res) {
             });
         });

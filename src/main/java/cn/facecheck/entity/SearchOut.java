@@ -23,6 +23,16 @@ public class SearchOut {
 
     private String img_url;
 
+    private String groupName;
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
     public String getSuccess_tag() {
         return success_tag;
     }

@@ -23,9 +23,11 @@ import org.json.JSONObject;
  */
 public class FaceCheckUtil {
 
-    private final static String APIKEY = "8QDvA6eIqUzKfP51bHuq9KiG";
+    public final static String APIKEY = "8QDvA6eIqUzKfP51bHuq9KiG";
 
-    private final static String SECRETKEY ="dso2mPmTGLFLb4E0pw7pYkhpX58xITeL";
+    public final static String SECRETKEY ="dso2mPmTGLFLb4E0pw7pYkhpX58xITeL";
+
+    public final static String AccessToken ="24.286950606e08dfefc610091f41507cc5.2592000.1575636077.282335-17676403";
 
 
     /*
@@ -35,14 +37,22 @@ public class FaceCheckUtil {
 
         String url = "https://aip.baidubce.com/rest/2.0/face/v3/search";
 
+
+
         String base64Code = ImageToBase64Util.imageToBase64(filePath);
 
+        String male = "star_male_neidi,star_male_taiwan,star_male_hongkong,star_male_riben,star_male_hanguo,star_male_oumei";
+        String female = "star_female_neidi,star_female_taiwan,star_female_hongkong,star_female_riben,star_female_hanguo,star_female_oumei";
 
         try {
             Map<String, Object> map = new HashMap<>();
             map.put("image", base64Code);
             map.put("liveness_control", "NONE");
-            map.put("group_id_list", faceGroup);
+            if("male".equals(faceGroup)){
+                map.put("group_id_list", male);
+            }else if("female".equals(faceGroup)){
+                map.put("group_id_list", female);
+            }
             map.put("image_type", "BASE64");
             map.put("quality_control", "LOW");
             if(max_user_num !=0){
@@ -166,4 +176,66 @@ public class FaceCheckUtil {
         }
         return null;
     }
+
+
+    /*
+    *
+    * 人脸添加测试
+    * */
+    public static String faceAddTest(String imgUrl,String groupId,String userId,String userInfo) {
+        // 请求url
+        String url = "https://aip.baidubce.com/rest/2.0/face/v3/faceset/user/add";
+
+
+        try {
+            Map<String, Object> map = new HashMap<>();
+            map.put("image", imgUrl);
+            map.put("group_id", groupId);
+            map.put("user_id", userId);
+            map.put("user_info", userInfo);
+            map.put("liveness_control", "NONE");
+            map.put("image_type", "URL");
+            map.put("quality_control", "LOW");
+            String param = GsonUtils.toJson(map);
+            String accessToken = AccessToken;
+            String result = HttpUtil.post(url, accessToken, "application/json", param);
+//            JSONObject j1 = new JSONObject(result);
+//            JSONObject j2 = j1.getJSONObject("result");
+            if(result != null){
+//                String face_token = j2.getString("face_token");
+                return result;
+            }else{
+                return null;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /*
+    * 人脸删除
+    * */
+    public static String groupDelete(String groupId) {
+        // 请求url
+        String url = "https://aip.baidubce.com/rest/2.0/face/v3/faceset/group/delete";
+        try {
+            Map<String, Object> map = new HashMap<>();
+            map.put("group_id", groupId);
+
+            String param = GsonUtils.toJson(map);
+
+            // 注意这里仅为了简化编码每一次请求都去获取access_token，线上环境access_token有过期时间， 客户端可自行缓存，过期后重新获取。
+            String accessToken = AccessToken;
+            String result = HttpUtil.post(url, accessToken, "application/json", param);
+//            System.out.println(result);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
 }

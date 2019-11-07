@@ -83,6 +83,7 @@ public class UserController {
         if("success".equals(searchOut.getSuccess_tag())){
             Star star =  starService.findStarImgUrl(searchOut.getUser_id());
             searchOut.setImg_url(star.getImg_url());
+            searchOut.setGroupName(star.getGroup_name());
         }
         System.out.println(GsonUtils.toJson(searchOut));
         return GsonUtils.toJson(searchOut);

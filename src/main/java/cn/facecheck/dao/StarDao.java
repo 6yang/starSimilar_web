@@ -22,6 +22,6 @@ public interface StarDao {
     void insertStarFace(@Param("groupId") String groupId, @Param("starInfo") String starInfo, @Param("face_token") String face_token, @Param("imgHttpUrl") String imgHttpUrl,@Param("uuid") String uuid);
 
 
-    @Select("select * from star where star_id = #{star_id}")
+    @Select("select * from face where star_id = #{star_id}")
     Star findStarImgUrl(String star_id);
 }

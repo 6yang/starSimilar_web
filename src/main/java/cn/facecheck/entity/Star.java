@@ -1,5 +1,7 @@
 package cn.facecheck.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 /***
  * @ClassName: Star
  * @Description:
@@ -20,6 +22,15 @@ public class Star {
 
     private String starId;
 
+    private String group_name;
+
+    public String getGroup_name() {
+        return group_name;
+    }
+
+    public void setGroup_name(String group_name) {
+        this.group_name = group_name;
+    }
 
     public Integer getId() {
         return id;
@@ -72,11 +83,13 @@ public class Star {
     @Override
     public String toString() {
         return "Star{" +
-                "starId='" + starId + '\'' +
+                "id=" + id +
                 ", groupId='" + groupId + '\'' +
                 ", starInfo='" + starInfo + '\'' +
                 ", face_taken='" + face_taken + '\'' +
                 ", img_url='" + img_url + '\'' +
+                ", starId='" + starId + '\'' +
+                ", group_name='" + group_name + '\'' +
                 '}';
     }
 }

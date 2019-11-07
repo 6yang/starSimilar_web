@@ -2,9 +2,11 @@ package cn.facecheck.utils;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
 
@@ -72,6 +74,48 @@ public class HttpUtil {
         }
         in.close();
         System.err.println("result:" + result);
+        return result;
+    }
+
+
+
+    /*
+    * 发送get请求
+    *
+    * */
+    public static String sendGet(String url, String param) throws Exception {
+
+        String result = "";
+        BufferedReader in = null;
+
+        try{
+            String request = url + "?" + param;
+            //打开和URL之间的连接
+            URLConnection connection = new URL(request).openConnection();
+            /* begin获取响应码 */
+            HttpURLConnection httpUrlConnection = (HttpURLConnection)connection;
+            httpUrlConnection.setConnectTimeout(300000);
+            httpUrlConnection.setReadTimeout(300000);
+            httpUrlConnection.connect();
+
+            in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            while ((inputLine = in.readLine()) != null)
+                result +=  inputLine;
+
+        }catch (Exception e){
+            System.out.println("发送GET请求出现异常！" + e);
+            e.printStackTrace();
+        } finally {
+            try {
+                if (in != null) {
+                    in.close();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+
         return result;
     }
 }
